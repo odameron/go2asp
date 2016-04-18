@@ -1,0 +1,50 @@
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+PREFIX uniprot: <http://bio2rdf.org/uniprot:>
+PREFIX go: <http://purl.obolibrary.org/obo/GO_>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?goRoot ?rootLabel (COUNT( DISTINCT ?go ) AS ?nbDesc )
+WHERE {
+  ?go (rdfs:subClassOf|(rdfs:subClassOf/owl:someValuesFrom))+ ?goRoot .
+  ?go rdfs:label ?goLabel .
+
+  ?goRoot rdfs:label ?rootLabel .
+
+  VALUES ?goRoot { go:0008150 go:0005575 go:0003674 }
+  #VALUES ?goRoot { go:0008150 }
+}
+GROUP BY ?goRoot ?rootLabel
+ORDER BY DESC(?nbDesc)
+
+#####################
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix go: <http://purl.obolibrary.org/obo/GO_>
+
+
+#SELECT DISTINCT ?descendant ?descendantLabel  ?superCl ?superLabel ?relation
+SELECT DISTINCT ?goOfInterest ?goOfInterestLabel (COUNT( DISTINCT ?descendant ) AS ?nbDesc )
+WHERE {
+  #VALUES ?goOfInterest { go:0008150 go:0005575 go:0003674 } .
+  VALUES ?goOfInterest { go:0008150 } .
+  ?goOfInterest rdfs:label ?goOfInterestLabel .
+
+  ?descendant (rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom)+ ?goOfInterest .
+  ?descendant rdf:type owl:Class .
+  ?descendant rdfs:label ?descendantLabel .
+  {
+    ?descendant rdfs:subClassOf ?restriction .
+    ?restriction rdf:type owl:Restriction .
+    ?restriction owl:someValuesFrom ?superCl .
+    ?restriction owl:onProperty ?relation .
+  }
+  UNION
+  {
+    ?descendant rdfs:subClassOf ?superCl .
+    ?descendant ?relation ?superCl .
+  }
+  ?superCl rdfs:label ?superLabel .
+}
+GROUP BY ?goOfInterest ?goOfInterestLabel

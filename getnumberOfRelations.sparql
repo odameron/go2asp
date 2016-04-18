@@ -1,0 +1,50 @@
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix go: <http://purl.obolibrary.org/obo/GO_>
+
+# BP = go:0008150
+# CC = go:0005575
+# MF = go:0003674
+
+SELECT DISTINCT ?relation ?relationLabel (COUNT( ?descendant) AS ?nbRelationInstances)
+WHERE {
+  #VALUES ?goOfInterest { go:0008150 go:0005575 go:0003674 } .
+  #VALUES ?goOfInterest { go:0000023 } .
+  VALUES ?goOfInterest { go:0008150 } .
+  ?goOfInterest rdfs:label ?goOfInterestLabel .
+
+  ?descendant (rdfs:subClassOf|(rdfs:subClassOf/owl:someValuesFrom))+ ?goOfInterest .
+  ?descendant rdf:type owl:Class .
+  ?descendant rdfs:label ?descendantLabel .
+  {
+    ?descendant rdfs:subClassOf ?restriction .
+    ?restriction rdf:type owl:Restriction .
+    ?restriction owl:someValuesFrom ?superCl .
+    ?restriction owl:onProperty ?relation .
+  }
+  UNION
+  {
+    ?descendant rdfs:subClassOf ?superCl .
+    ?descendant ?relation ?superCl .
+  }
+  ?superCl (rdfs:subClassOf|(rdfs:subClassOf/owl:someValuesFrom))* ?goOfInterest .
+  ?superCl rdfs:label ?superLabel .
+
+  # Rhaaa, not all relations have nice labels (e.g. "has_part" but "part of")
+  # so I provided the labels instead of simply using rdfs:label
+  OPTIONAL { ?relation rdfs:label ?relationLabel . }
+#   VALUES (?relation ?relationLabel) {
+#     (rdfs:subClassOf "subClassOf")
+#     (
+# <http://purl.obolibrary.org/obo/BFO_0000050> "partOf")
+#     (<http://purl.obolibrary.org/obo/RO_0002211> "regulates")
+#     (<http://purl.obolibrary.org/obo/RO_0002213> "regulatesPositively")
+#     (<http://purl.obolibrary.org/obo/RO_0002212> "regulatesNegatively")
+#     (<http://purl.obolibrary.org/obo/BFO_0000051> "hasPart")
+#     (<http://purl.obolibrary.org/obo/RO_0002092> "happensDuring")
+#     (<http://purl.obolibrary.org/obo/RO_0002093> "endsDuring")
+#   }
+}
+GROUP BY ?relation ?relationLabel
+ORDER BY DESC(?nbRelationInstances)
