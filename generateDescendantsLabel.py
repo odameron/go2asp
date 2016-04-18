@@ -28,12 +28,7 @@ sparql.setQuery(query)
 sparql.setReturnFormat(JSON)
 results = sparql.query().convert()
 nbResults = 0
-# for result in results["results"]["bindings"]:
-#     nbResults += 1
-#     print("")
-#     print(result["descendant"]["value"] + "  ===>  " + result["descendantLabel"]["value"])
-# print("")
-# print("Nb results: " + str(nbResults))
+
 
 with open(filePathResultLabel, "w") as resultFile:
     for result in results["results"]["bindings"]:
