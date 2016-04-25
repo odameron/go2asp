@@ -14,8 +14,8 @@ import time
 ### PARAMETERS
 ###
 ##########
-sparqlEndpointGo = "http://localhost:3030/go/query" # fuseki
-#sparqlEndpointGo = "http://localhost:8890/sparql" # virtuoso
+#sparqlEndpointGo = "http://localhost:3030/go/query" # fuseki
+sparqlEndpointGo = "http://localhost:8890/sparql" # virtuoso
 filePathQueryHierarchy = "getDescendantsHierarchy.sparql"
 filePathResultLabel = "go-BP-hierarchy.lp"
 verboseComment = True # each ASP line ends with a human-readable comment using the labels of the GO terms instead of their identifiers
