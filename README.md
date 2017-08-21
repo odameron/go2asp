@@ -11,8 +11,8 @@ go2asp is a collection of SPARQL queries and scripts for generating as ASP repre
 * [sparqlwrapper](https://rdflib.github.io/sparqlwrapper/) for the Python scripts
 
 ### Usage
-
 Currently, the scripts have to be run manually:
+
 * `generateDescendantsLabel.py` generates a list of predicates `label(go_0000001, "mitochondrion inheritance")` in the `file go-BP-labels.lp`
 * `generateDescendantsHierarchy.py`generates a list of predicates `subClassOf(go_0000003, go_0008150).` in the file `go-BP-hierarchy.lp` (if the parameter `verboseComment` is FALSE) or in the file `go-BP-hierarchy-withComments.lp` (if the parameter `verboseComment` is TRUE).
 

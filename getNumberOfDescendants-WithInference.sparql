@@ -1,4 +1,4 @@
-#DEFINE input:inference 'GO'
+DEFINE input:inference 'GO'
 
 PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
 PREFIX uniprot: <http://bio2rdf.org/uniprot:>

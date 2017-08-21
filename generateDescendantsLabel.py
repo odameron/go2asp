@@ -33,7 +33,8 @@ nbResults = 0
 with open(filePathResultLabel, "w") as resultFile:
     for result in results["results"]["bindings"]:
         nbResults += 1
-        resultFile.write("label(" + result["descendant"]["value"].replace("http://purl.obolibrary.org/obo/GO_", "go_") + ", \"" + result["descendantLabel"]["value"] + "\").\n")
+        #resultFile.write("label(" + result["descendant"]["value"].replace("http://purl.obolibrary.org/obo/GO_", "go_") + ", \"" + result["descendantLabel"]["value"] + "\").\n")
+        resultFile.write("label(" + result["descendantIdent"]["value"] + ", \"" + result["descendantLabel"]["value"] + "\").\n")
 print("")
 print("Nb results: " + str(nbResults))
 

@@ -7,11 +7,11 @@ prefix go: <http://purl.obolibrary.org/obo/GO_>
 # CC = go:0005575
 # MF = go:0003674
 
-SELECT DISTINCT (REPLACE(str(?descendant), "http://purl.obolibrary.org/obo/GO_", "go_") AS ?descendantIdent) ?descendantLabel
+SELECT DISTINCT ?descendant ?descendantLabel
 WHERE {
   #VALUES ?goOfInterest { go:0008150 go:0005575 go:0003674 } .
-  VALUES ?goOfInterest { go:0008150 } .	# Biological process
-  #VALUES ?goOfInterest { go:0042168 } .		# Heme metabolic process
+  #VALUES ?goOfInterest { go:0008150 } .	# Biological process
+  VALUES ?goOfInterest { go:0042168 } .		# Heme metabolic process
   ?goOfInterest rdfs:label ?goOfInterestLabel .
 
   ?descendant (rdfs:subClassOf|(rdfs:subClassOf/owl:someValuesFrom))* ?goOfInterest .
